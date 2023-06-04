@@ -196,6 +196,20 @@ class TcpSocketConnection{
     }
   }
 
+  void sendCmd(String cmd) async{
+    if(_server!=null &&_connected){
+      final list = <int>[];
+      for (int i = 0; i < cmd.length; i = i + 2) {
+        list.add(int.parse(cmd.substring(i, i + 2),radix: 16));
+      }
+
+      _server.add(utf8.encode(cmd));
+      _printData("Message sent: "+cmd);
+    }else{
+      print("Socket not initialized before sending message! Make sure you have already called the method 'connect()'");
+    }
+  }
+
   /// Sends a message to server. Make sure to have established a connection before calling this method
   /// Message will be sent as 'message'+'eom'
   ///  * @param  message  the message to send to server
